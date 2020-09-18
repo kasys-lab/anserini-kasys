@@ -80,6 +80,7 @@ Note that these regressions capture the "out of the box" experience, based on [_
 + [Regressions for FIRE 2012 Monolingual Bengali](docs/regressions-fire12-bn.md)
 + [Regressions for FIRE 2012 Monolingual Hindi](docs/regressions-fire12-hi.md)
 + [Regressions for FIRE 2012 Monolingual English](docs/regressions-fire12-en.md)
++ [Regressions for NTCIR-15 WWW-3 REP run](docs/regressions-ntcir15-www3.md)
 
 Other experiments:
 
