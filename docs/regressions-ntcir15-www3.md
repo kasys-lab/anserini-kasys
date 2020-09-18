@@ -1,4 +1,4 @@
-#NTCIR 15 WWW-3 Task REP run by KASYS
+# NTCIR 15 WWW-3 Task REP run by KASYS
 
 We add new function for feature extraction.
 New features we can get are idf, LMIR.JM, LMIR.DIR, LIMR.ABS
