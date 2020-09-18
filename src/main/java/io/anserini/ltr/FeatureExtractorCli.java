@@ -21,6 +21,7 @@ import io.anserini.search.topicreader.MicroblogTopicReader;
 import io.anserini.search.topicreader.TopicReader;
 import io.anserini.search.topicreader.TrecTopicReader;
 import io.anserini.search.topicreader.WebxmlTopicReader;
+import io.anserini.search.topicreader.NtcirTopicReader;
 import io.anserini.util.Qrels;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,25 +63,46 @@ public class FeatureExtractorCli {
     @Option(name = "-collection", metaVar = "[path]", required = true, usage = "[clueweb|gov2|twitter]")
     public String collection;
 
+  //コンパイルできない原因
+    @Option(name = "-topicreader", metaVar = "[path]", required = true, usage = "[web|gov2|twitter|www]")
+    public String topicreader;
+
     @Option(name = "-extractors", metaVar = "[path]", required = false, usage = "FeatureExtractors File")
     public String extractors = null;
 
+    // @SuppressWarnings("unchecked")
+    // public <K> TopicReader<K> buildTopicReaderForTopicreader() throws Exception {
+    //   if ("web".equals(topicreader)) {
+    //     return (TopicReader<K>) new WebxmlTopicReader(Paths.get(topicsFile));
+    //   } else if ("gov2".equals(topicreader)){
+    //     return (TopicReader<K>) new TrecTopicReader(Paths.get(topicsFile));
+    //   } else if ("twitter".equals(topicreader)) {
+    //     return (TopicReader<K>) new MicroblogTopicReader(Paths.get(topicsFile));
+    //   } else if ("www".equals(topicreader)) {
+    //     return (TopicReader<K>) new NtcirTopicReader(Paths.get(topicsFile));
+    //   }
+
+    //   throw new RuntimeException("Unrecognized topicreader " + topicreader);
+    // }
+
     @SuppressWarnings("unchecked")
     public <K> TopicReader<K> buildTopicReaderForCollection() throws Exception {
-      if ("clueweb".equals(collection)) {
+      if ("clueweb".equals(topicreader)) {
         return (TopicReader<K>) new WebxmlTopicReader(Paths.get(topicsFile));
-      } else if ("gov2".equals(collection)){
+      } else if ("gov2".equals(topicreader)){
         return (TopicReader<K>) new TrecTopicReader(Paths.get(topicsFile));
-      } else if ("twitter".equals(collection)) {
+      } else if ("twitter".equals(topicreader)) {
         return (TopicReader<K>) new MicroblogTopicReader(Paths.get(topicsFile));
+      } else if ("www".equals(topicreader)) {
+        return (TopicReader<K>) new NtcirTopicReader(Paths.get(topicsFile));
       }
 
-      throw new RuntimeException("Unrecognized collection " + collection);
+      throw new RuntimeException("Unrecognized topicreader " + topicreader);
     }
 
     @SuppressWarnings("unchecked")
     public <K> BaseFeatureExtractor<K> buildBaseFeatureExtractor(IndexReader reader, Qrels qrels, Map<K, Map<String, String>> topics, FeatureExtractors extractors) {
-      if ("clueweb".equals(collection) || "gov2".equals(collection)) {
+      if ("clueweb".equals(collection) || "gov2".equals(collection) || "www".equals(topicreader)) {
         return new WebFeatureExtractor(reader, qrels, topics, extractors);
       } else if ("twitter".equals(collection)) {
         return (BaseFeatureExtractor<K>) new TwitterFeatureExtractor(reader, qrels, (Map<Integer, Map<String, String>>) topics, extractors);
@@ -119,6 +141,8 @@ public class FeatureExtractorCli {
     // Query parser needed to construct the query object for feature extraction in the loop
     PrintStream out = new PrintStream (new FileOutputStream(new File(parsedArgs.outputFile)));
 
+
+    // TopicReader<K> tr = parsedArgs.buildTopicReaderForTopicreader();
     TopicReader<K> tr = parsedArgs.buildTopicReaderForCollection();
     SortedMap<K, Map<String, String>> topics = tr.read();
     LOG.debug(String.format("%d topics found", topics.size()));

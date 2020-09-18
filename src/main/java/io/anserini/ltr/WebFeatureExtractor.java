@@ -32,10 +32,14 @@ import io.anserini.ltr.feature.base.SCQFeatureExtractor;
 import io.anserini.ltr.feature.base.SimplifiedClarityFeatureExtractor;
 import io.anserini.ltr.feature.base.SumMatchingTf;
 import io.anserini.ltr.feature.base.TFIDFFeatureExtractor;
+import io.anserini.ltr.feature.base.IDFFeatureExtractor;
 import io.anserini.ltr.feature.base.TermFrequencyFeatureExtractor;
 import io.anserini.ltr.feature.base.UniqueTermCount;
+import io.anserini.ltr.feature.base.LMJMExtractor;
+import io.anserini.ltr.feature.base.LMDIRExtractor;
+import io.anserini.ltr.feature.base.LMABSExtractor;
 import io.anserini.util.Qrels;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LogManager; 
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -79,7 +83,12 @@ public class WebFeatureExtractor extends BaseFeatureExtractor {
                   new AvgIDFFeatureExtractor(),
                   new SimplifiedClarityFeatureExtractor(),
                   new PMIFeatureExtractor(),
-                  new SCQFeatureExtractor()
+                  new SCQFeatureExtractor(),
+                  new LMJMExtractor(),
+                  new LMDIRExtractor(),
+                  new LMABSExtractor(),
+                  new IDFFeatureExtractor()
+
           );
 
   //**************************************************
